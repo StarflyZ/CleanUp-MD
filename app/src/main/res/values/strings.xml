@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CleanUp</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_zone">Zone</string>
+    <string name="nav_article">Article</string>
+    <string name="nav_about">About</string>
+    <string name="detail_report_judul">Detail Report</string>
+    <string name="judul_report">Judul</string>
+    <string name="description_report">Description</string>
+    <string name="detail_report">Detail Report</string>
+    <string name="cleanup">CleanUp</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password\n</string>
+    <string name="register_tv">Register</string>
+    <string name="login_btn">Login</string>
+    <string name="login_tv">Login</string>
+    <string name="re_enter_password">Re-enter Password</string>
+    <string name="name_reg">Name</string>
+</resources>
