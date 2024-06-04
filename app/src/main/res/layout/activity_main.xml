@@ -21,10 +21,27 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_menu"
-        android:layout_width="409dp"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/md_theme_primary"
+        app:itemIconTint="@color/md_theme_onPrimary"
+        app:itemTextColor="@color/md_theme_onPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/dummy_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:alpha="0"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/nav_menu"
+        app:layout_constraintTop_toBottomOf="@+id/nav_menu"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 </androidx.constraintlayout.widget.ConstraintLayout>

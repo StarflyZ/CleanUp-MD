@@ -10,6 +10,7 @@
 
     <string name="report_title_tv">Title</string>
     <string name="report_desc_tv">Description</string>
+    <string name="report_loc_tv">Location</string>
 
     <string name="description_report">Description</string>
     <string name="detail_report">Detail Report</string>
@@ -44,4 +45,9 @@
 
     <string name="latest_report">Latest Report</string>
     <string name="latest_article">Latest Article</string>
+
+    <string name="check_latest_report">Check latest report</string>
+    <string name="permission_granted">Permission request granted</string>
+    <string name="permission_denied">Permission request denied</string>
+    <string name="empty_image">No media selected</string>
 </resources>

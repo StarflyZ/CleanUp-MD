@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/app_navigation">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/nav_home">
 
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.capstone.cleanup.ui.main.MainFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/nav_zone"
+        android:name="com.capstone.cleanup.ui.zone.MapsFragment"
+        android:label="@string/nav_zone"
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/nav_article"
+        android:name="com.capstone.cleanup.ui.article.ArticleFragment"
+        android:label="@string/nav_article"
+        tools:layout="@layout/fragment_article" >
+        <action
+            android:id="@+id/action_nav_article_to_ReportFragment"
+            app:destination="@id/ReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ReportFragment"
+        android:name="com.capstone.cleanup.ui.report.ReportFragment"
+        android:label="ReportFragment" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.capstone.cleanup.ui.profile.ProfileFragment"
+        android:label="@string/nav_about"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
