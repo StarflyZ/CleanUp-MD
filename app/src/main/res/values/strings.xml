@@ -50,4 +50,10 @@
     <string name="permission_granted">Permission request granted</string>
     <string name="permission_denied">Permission request denied</string>
     <string name="empty_image">No media selected</string>
+
+    <string name="your_web_client_id">1076441793512-7oqaguqnm4tg17a2a7tif9sjks9nm66o.apps.googleusercontent.com</string>
+    <string name="email_error">Incorrect email format</string>
+    <string name="password_error">Password should be more than 8</string>
+    <string name="or_sign_in_with">or signin with</string>
+    <string name="already_have">Already have account?\n</string>
 </resources>

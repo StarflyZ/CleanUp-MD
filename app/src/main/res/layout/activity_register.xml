@@ -8,15 +8,16 @@
     tools:context=".ui.register.RegisterActivity">
 
     <TextView
-        android:id="@+id/textViewjudul"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:text="@string/cleanup"
-        android:textSize="48sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/textViewjudul"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="52dp"
+    android:text="@string/register_btn"
+    android:textSize="48sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.131"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
@@ -33,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.capstone.cleanup.ui.custom.CustomEditTextEmail
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,11 +54,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.capstone.cleanup.ui.custom.CustomEditTextPass
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_password" />
+            android:hint="@string/login_password"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -67,19 +69,19 @@
         android:layout_marginTop="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/login_tv"
+        android:text="@string/already_have"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rePassInputLayout" />
 
     <Button
-        android:id="@+id/btn_login"
-        android:layout_width="0dp"
+        android:id="@+id/btn_register"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="144dp"
-        android:text="@string/login_btn"
+        android:text="@string/register_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login" />
 
@@ -98,11 +100,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordInputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.capstone.cleanup.ui.custom.CustomEditTextPass
             android:id="@+id/rePassEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/re_enter_password" />
+            android:hint="@string/re_enter_password"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
