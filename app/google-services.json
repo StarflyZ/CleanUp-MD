@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "1076441793512",
-    "project_id": "cleanup-login",
-    "storage_bucket": "cleanup-login.appspot.com"
+    "project_number": "855867696349",
+    "project_id": "capstone-ps404",
+    "storage_bucket": "capstone-ps404.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1076441793512:android:c2b6c9d69868724ff0da5d",
+        "mobilesdk_app_id": "1:855867696349:android:1c4091fa88e0fc30bce734",
         "android_client_info": {
           "package_name": "com.capstone.cleanup"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1076441793512-02pbital5kld7hh124ug3s4u3qno67ba.apps.googleusercontent.com",
+          "client_id": "855867696349-kn2hdugdo7s3q4c53hg63lj7f38mqgvv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.capstone.cleanup",
-            "certificate_hash": "1468b843402dccebcf9955813573594178b9ef86"
+            "certificate_hash": "09c13fc88410724e37a8f872e0e280ac9517002f"
           }
         },
         {
-          "client_id": "1076441793512-7oqaguqnm4tg17a2a7tif9sjks9nm66o.apps.googleusercontent.com",
+          "client_id": "855867696349-0pg97m2dfriaar51n9b6toac49sa1ub1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCc7s52iEoW0Ho5QbwdfO6PayivS0Pow1c"
+          "current_key": "AIzaSyCvzMl-toLpqI3YdaNy-Glzs5OUg1BeDms"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1076441793512-7oqaguqnm4tg17a2a7tif9sjks9nm66o.apps.googleusercontent.com",
+              "client_id": "855867696349-0pg97m2dfriaar51n9b6toac49sa1ub1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

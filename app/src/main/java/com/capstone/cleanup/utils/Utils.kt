@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.capstone.cleanup.BuildConfig
 import java.io.File
@@ -41,4 +43,12 @@ fun getImageUriForPreQ(context: Context): Uri {
         "${BuildConfig.APPLICATION_ID}.fileprovider",
         imageFile
     )
+}
+
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
+
+fun showLoading(loadingView: View, isLoading: Boolean) {
+    loadingView.visibility = if (isLoading) View.VISIBLE else View.GONE
 }

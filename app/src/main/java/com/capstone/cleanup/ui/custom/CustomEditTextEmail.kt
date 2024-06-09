@@ -36,7 +36,7 @@ class CustomEditTextEmail : AppCompatEditText {
         })
     }
 
-    private fun isValidEmail(email: CharSequence?): Boolean {
+    fun isValidEmail(email: CharSequence?): Boolean {
         return !email.isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }

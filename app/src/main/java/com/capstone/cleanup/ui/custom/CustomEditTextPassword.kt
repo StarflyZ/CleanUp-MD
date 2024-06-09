@@ -24,7 +24,7 @@ class CustomEditTextPass : AppCompatEditText {
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString().length < 8) {
+                if (!isValidPassword(s.toString())) {
                     setError(
                         context.getString(R.string.password_error),
                         null
@@ -35,5 +35,9 @@ class CustomEditTextPass : AppCompatEditText {
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
+    }
+
+    fun isValidPassword(pass: String): Boolean {
+        return  pass.isNotEmpty() && pass.length >= 8
     }
 }

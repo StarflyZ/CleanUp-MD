@@ -2,22 +2,21 @@ package com.capstone.cleanup.ui.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.capstone.cleanup.R
 import com.capstone.cleanup.databinding.ActivityRegisterBinding
+import com.capstone.cleanup.ui.ViewModelFactory
 import com.capstone.cleanup.ui.login.LoginActivity
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import com.capstone.cleanup.utils.showLoading
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var mAuth: FirebaseAuth
+
+    private val registerViewModel by viewModels<RegisterViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,29 +24,28 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mAuth = Firebase.auth
         supportActionBar?.hide()
+
+        registerViewModel.isSuccess.observe(this) {
+            if (it) {
+                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                finish()
+            }
+        }
+
+        registerViewModel.isLoading.observe(this) {
+            showLoading(binding.progressBar, it)
+        }
 
         with(binding){
 
             btnRegister.setOnClickListener {
-                val name = nameEditText.text.toString()
-                val email = emailEditText.text.toString()
-                val password = passwordEditText.text.toString()
-                val repass = rePassEditText.text.toString()
+                val name = nameEditText.text.toString().trim()
+                val email = emailEditText.text.toString().trim()
+                val password = passwordEditText.text.toString().trim()
+                val repass = rePassEditText.text.toString().trim()
                 if (isValidInput(name, email, password, repass)) {
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this@RegisterActivity) { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(this@RegisterActivity, "Registration successful!", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                Log.w(TAG, "createUserWithEmailAndPassword:failure", task.exception)
-                                Toast.makeText(this@RegisterActivity, "Registration failed!", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    registerViewModel.register(email, password, name)
                 } else {
                     Toast.makeText(this@RegisterActivity, "Please enter valid details!", Toast.LENGTH_SHORT).show()
                 }
@@ -73,18 +71,10 @@ class RegisterActivity : AppCompatActivity() {
 
     // Helper methods for email and password validation (implement these)
     private fun isValidEmail(email: String): Boolean {
-        // Implement email address validation logic here
-        // You can use regular expressions or other techniques
-        return true // Replace with your implementation
+        return binding.emailEditText.isValidEmail(email)
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        // Implement password validation logic here
-        // You can check password length, complexity (uppercase, lowercase, symbols)
-        return true // Replace with your implementation
-    }
-
-    companion object{
-        const val TAG = "RegisterActivity"
+        return binding.passwordEditText.isValidPassword(password)
     }
 }

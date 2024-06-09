@@ -8,6 +8,12 @@
     <string name="detail_report_judul">Detail Report</string>
     <string name="judul_report">Judul</string>
 
+    <string name="detail_article_title">Detail Article</string>
+
+    <string name="article_title_tv">Title</string>
+    <string name="article_desc_tv">Description</string>
+
+
     <string name="report_title_tv">Title</string>
     <string name="report_desc_tv">Description</string>
     <string name="report_loc_tv">Location</string>
@@ -51,9 +57,13 @@
     <string name="permission_denied">Permission request denied</string>
     <string name="empty_image">No media selected</string>
 
-    <string name="your_web_client_id">1076441793512-7oqaguqnm4tg17a2a7tif9sjks9nm66o.apps.googleusercontent.com</string>
+    <string name="your_web_client_id">855867696349-0pg97m2dfriaar51n9b6toac49sa1ub1.apps.googleusercontent.com</string>
     <string name="email_error">Incorrect email format</string>
     <string name="password_error">Password should be more than 8</string>
     <string name="or_sign_in_with">or signin with</string>
     <string name="already_have">Already have account?\n</string>
+
+    <string name="title_article_item">Article name</string>
+    <string name="article_source">Source</string>
+
 </resources>
