@@ -51,6 +51,9 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
+            tvLogin.setOnClickListener {
+                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            }
         }
     }
     private fun isValidInput(name: String, email: String, password: String, repassword: String): Boolean {
