@@ -11,6 +11,7 @@ import com.capstone.cleanup.ui.ViewModelFactory
 import com.capstone.cleanup.ui.main.MainActivity
 import com.capstone.cleanup.ui.register.RegisterActivity
 import com.capstone.cleanup.utils.showLoading
+import com.capstone.cleanup.utils.showToast
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -27,16 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        loginViewModel.isSuccess.observe(this) {
-            if (it) {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
-            }
-        }
-
-        loginViewModel.isLoading.observe(this) {
-            showLoading(binding.progressBar, it)
-        }
+        observeLiveData()
 
         with(binding){
             tvReg.setOnClickListener {
@@ -58,6 +50,23 @@ class LoginActivity : AppCompatActivity() {
                     loginViewModel.loginWithEmailAndPassword(email, password)
                 }
             }
+        }
+    }
+
+    private fun observeLiveData() {
+        loginViewModel.isSuccess.observe(this) {
+            if (it) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
+        }
+
+        loginViewModel.isLoading.observe(this) {
+            showLoading(binding.progressBar, it)
+        }
+
+        loginViewModel.errMsg.observe(this) {
+            showToast(this, it)
         }
     }
 }

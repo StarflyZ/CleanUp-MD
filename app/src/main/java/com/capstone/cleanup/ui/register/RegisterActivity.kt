@@ -10,6 +10,7 @@ import com.capstone.cleanup.databinding.ActivityRegisterBinding
 import com.capstone.cleanup.ui.ViewModelFactory
 import com.capstone.cleanup.ui.login.LoginActivity
 import com.capstone.cleanup.utils.showLoading
+import com.capstone.cleanup.utils.showToast
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -26,16 +27,7 @@ class RegisterActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        registerViewModel.isSuccess.observe(this) {
-            if (it) {
-                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                finish()
-            }
-        }
-
-        registerViewModel.isLoading.observe(this) {
-            showLoading(binding.progressBar, it)
-        }
+        observeLiveData()
 
         with(binding){
 
@@ -79,5 +71,22 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun isPasswordValid(password: String): Boolean {
         return binding.passwordEditText.isValidPassword(password)
+    }
+
+    private fun observeLiveData() {
+        registerViewModel.isSuccess.observe(this) {
+            if (it) {
+                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                finish()
+            }
+        }
+
+        registerViewModel.isLoading.observe(this) {
+            showLoading(binding.progressBar, it)
+        }
+
+        registerViewModel.errMsg.observe(this) {
+            showToast(this, it)
+        }
     }
 }

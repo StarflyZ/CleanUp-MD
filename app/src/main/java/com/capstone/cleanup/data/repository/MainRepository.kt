@@ -1,8 +1,11 @@
 package com.capstone.cleanup.data.repository
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat.getString
+import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -12,7 +15,6 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.cleanup.R
-import com.capstone.cleanup.utils.showToast
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -25,6 +27,11 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.options
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.storage
+import java.net.URL
 
 class MainRepository private constructor(
     private val context: Context
@@ -34,9 +41,21 @@ class MainRepository private constructor(
 
     private val fireStore: FirebaseFirestore = Firebase.firestore
     val articlesRef = fireStore.collection(ARTICLE_CHILD).orderBy("id")
+    val reportRef = fireStore.collection(REPORT_CHILD)
+
+    val storage: FirebaseStorage = Firebase.storage
 
     private val _isSuccess = MutableLiveData<Boolean>()
     val isSuccess: LiveData<Boolean> get() = _isSuccess
+
+    private val _isUploading = MutableLiveData<Boolean>()
+    val isUploading: LiveData<Boolean> get() = _isUploading
+
+    private val _liveProfilePic = MutableLiveData<Uri>()
+    val liveProfilePic: LiveData<Uri> get() = _liveProfilePic
+
+    private val _errMsg = MutableLiveData<String>()
+    val errMsg: LiveData<String> get() = _errMsg
 
     suspend fun signIn(){
         val credentialManager = CredentialManager.create(context)
@@ -99,16 +118,15 @@ class MainRepository private constructor(
                     auth.updateCurrentUser(user!!)
                         .addOnSuccessListener {
                             _isSuccess.value = true
-                            showToast(context, "Login Success")
                     }
                         .addOnFailureListener {
                             Log.e(TAG, it.message.toString())
-                            showToast(context, "Login Fail")
+                            _errMsg.value = it.message
                         }
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     _isSuccess.value = false
-                    showToast(context, "Login Fail")
+                    _errMsg.value = task.exception?.message
                 }
             }
     }
@@ -122,17 +140,16 @@ class MainRepository private constructor(
                     auth.updateCurrentUser(user!!)
                         .addOnSuccessListener {
                             _isSuccess.value = true
-                            showToast(context, "Login Success")
                         }
                         .addOnFailureListener {
                             Log.e(TAG, it.message.toString())
-                            showToast(context, "Login Fail")
+                            _errMsg.value = it.message
                         }
                 } else {
                     _isSuccess.value = false
                     Log.w(TAG, "signInWithEmailAndPassword:failure", task.exception)
                     // Handle login failure (e.g., display error message)
-                    showToast(context, "Login failed!")
+                    _errMsg.value = task.exception?.message
                 }
             }
     }
@@ -147,11 +164,10 @@ class MainRepository private constructor(
 
                     task.result.user?.updateProfile(setUsername) // set displayName of the user to server
                     _isSuccess.value = true
-                    showToast(context, "Registration successful!")
                 } else {
                     Log.w(TAG, "createUserWithEmailAndPassword:failure", task.exception)
                     _isSuccess.value = false
-                    showToast(context, "Registration failed!")
+                    _errMsg.value = task.exception?.message
                 }
             }
     }
@@ -162,10 +178,56 @@ class MainRepository private constructor(
         credentialManager.clearCredentialState(ClearCredentialStateRequest())
     }
 
+    fun changeProfilePic(imageUri: Uri) {
+        val userDataRef = storage.reference.child(USER_DATA_CHILD).child(currentUser?.displayName.toString())
+
+        val uploadTask = userDataRef.putFile(imageUri)
+
+
+        uploadTask.addOnProgressListener {
+            _isUploading.value = true
+        }
+
+        uploadTask.addOnFailureListener {
+            _isUploading.value = false
+            _errMsg.value = it.message
+        }
+
+        uploadTask.addOnSuccessListener {
+            if (it.task.isSuccessful) {
+                val resultURL = userDataRef.downloadUrl
+                Log.d(TAG, "Link Before Update: ${currentUser?.photoUrl}")
+
+                resultURL.addOnSuccessListener { uri ->
+                    val setProfilePic = UserProfileChangeRequest.Builder()
+                        .setPhotoUri(uri)
+                        .build()
+                    currentUser?.updateProfile(setProfilePic)?.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Profile update Success")
+                            auth.updateCurrentUser(currentUser)
+                            Log.d(TAG, "Link After Update: ${currentUser.photoUrl}")
+                            currentUser.reload()
+                            _liveProfilePic.value = currentUser.photoUrl
+                            Log.d(TAG, "Profile reloaded")
+                            Log.d(TAG, "Link After Reload: ${currentUser.photoUrl}")
+                        }
+                    }
+                    _isUploading.value = false
+                }
+            } else {
+                _isUploading.value = false
+                _errMsg.value = it.task.exception?.message
+            }
+        }
+    }
+
     companion object {
         private val TAG = MainRepository::class.java.simpleName
 
         private const val ARTICLE_CHILD = "article"
+        private const val REPORT_CHILD = "report"
+        private const val USER_DATA_CHILD = "user_data"
 
         fun getInstance(
             context: Context

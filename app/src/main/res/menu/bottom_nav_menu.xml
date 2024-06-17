@@ -8,9 +8,9 @@
         android:title="@string/nav_home" />
 
     <item
-        android:id="@+id/nav_zone"
-        android:icon="@drawable/baseline_map_24"
-        android:title="@string/nav_zone" />
+        android:id="@+id/nav_classification"
+        android:icon="@drawable/ic_classify_24"
+        android:title="@string/nav_classification" />
 
     <item
         android:id="@+id/nav_article"

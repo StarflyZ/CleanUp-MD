@@ -9,12 +9,16 @@
         android:id="@+id/nav_home"
         android:name="com.capstone.cleanup.ui.main.MainFragment"
         android:label="@string/nav_home"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_about"
+            app:destination="@id/nav_about" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_zone"
-        android:name="com.capstone.cleanup.ui.zone.MapsFragment"
-        android:label="@string/nav_zone"
-        tools:layout="@layout/fragment_maps" />
+        android:id="@+id/nav_classification"
+        android:name="com.capstone.cleanup.ui.classification.ClassificationFragment"
+        android:label="@string/nav_classification"
+        tools:layout="@layout/fragment_classification" />
     <fragment
         android:id="@+id/nav_article"
         android:name="com.capstone.cleanup.ui.article.ArticleFragment"

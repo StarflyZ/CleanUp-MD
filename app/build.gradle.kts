@@ -32,6 +32,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        mlModelBinding = true
     }
 
     compileOptions {
@@ -57,8 +58,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.livedata.ktx)
 
-
     implementation(libs.glide)
+
+    implementation(libs.firebase.storage)
 
     // Test
     testImplementation(libs.junit)
@@ -78,4 +80,13 @@ dependencies {
 
     implementation(libs.play.services.maps)
 
+    // TensorFlow
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
+    implementation(libs.tensorflow.lite.gpu)
+
+    implementation(libs.tensorflow.lite.task.vision)
+    // Use this for TFLite Vision task using play service
+    //implementation(libs.tensorflow.lite.task.vision.play.services)
+    //implementation(libs.play.services.tflite.gpu)
 }

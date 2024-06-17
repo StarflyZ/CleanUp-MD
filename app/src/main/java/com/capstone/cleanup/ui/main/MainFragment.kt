@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.capstone.cleanup.databinding.FragmentMainBinding
 import com.capstone.cleanup.ui.ViewModelFactory
 import com.capstone.cleanup.ui.adpter.ArticleAdapter
+import com.capstone.cleanup.ui.adpter.ReportAdapter
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -20,7 +21,14 @@ class MainFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
-    private lateinit var adapter: ArticleAdapter
+    private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var reportAdapter: ReportAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        articleAdapter = mainViewModel.articleAdapter
+        reportAdapter = mainViewModel.reportAdapter
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +38,6 @@ class MainFragment : Fragment() {
         return binding?.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        adapter = mainViewModel.articleAdapter
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -42,12 +45,15 @@ class MainFragment : Fragment() {
             showLoading(it)
         }
 
-        val layoutManager = LinearLayoutManager(requireActivity())
-        layoutManager.orientation = RecyclerView.HORIZONTAL
-        binding?.rvArticle?.layoutManager = layoutManager
+        val layoutManager0 = LinearLayoutManager(requireActivity())
+        val layoutManager1 = LinearLayoutManager(requireActivity())
+        layoutManager0.orientation = RecyclerView.HORIZONTAL
+        layoutManager1.orientation = RecyclerView.HORIZONTAL
+        binding?.rvArticle?.layoutManager = layoutManager0
+        binding?.rvReport?.layoutManager = layoutManager1
 
-        adapter = mainViewModel.articleAdapter
-        binding?.rvArticle?.adapter = adapter
+        binding?.rvArticle?.adapter = articleAdapter
+        binding?.rvReport?.adapter = reportAdapter
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -57,11 +63,13 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter.startListening()
+        articleAdapter.startListening()
+        reportAdapter.startListening()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        adapter.stopListening()
+        articleAdapter.stopListening()
+        reportAdapter.stopListening()
     }
 }

@@ -6,7 +6,7 @@
     <string name="nav_about">About</string>
 
     <string name="detail_report_judul">Detail Report</string>
-    <string name="judul_report">Judul</string>
+    <string name="judul_report">%s (%s, %s)</string>
 
     <string name="detail_article_title">Detail Article</string>
 
@@ -65,5 +65,20 @@
 
     <string name="title_article_item">Article name</string>
     <string name="article_source">Source</string>
+    <string name="tflitevision_is_not_initialized_yet">fLiteVision is not initialized yet</string>
+    <string name="image_classifier_failed">Image classifier failed to initialize. See error logs for details</string>
+    <string name="result_empty">Image classifier have no result</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_post_classification">Classification AI</string>
+    <string name="classify_desc">Put your image here and our AI will classify it\'s type</string>
+    <string name="nav_classification">Classify</string>
+    <string name="title_result_classification">Classification Result</string>
+    <string name="classify_result">Result: %s</string>
+    <string name="title_report_item">Title</string>
+    <string name="reporter_name">Name</string>
+    <string name="report_time">%s, %s</string>
+    <string name="report_comment">Comment</string>
+    <string name="ed_comment_hint">Type a comment ...</string>
 
 </resources>

@@ -84,12 +84,12 @@ class PostActivity : AppCompatActivity() {
         }
 
         binding.btnContinue.setOnClickListener {
-            if (currentImageUri != null) {
+            if (currentImageUri == null) {
+                showToast(getString(R.string.empty_image))
+            } else {
                 val intent = Intent(this, PostActivity2::class.java)
                 intent.putExtra(EXTRA_IMAGE, currentImageUri)
                 startActivity(intent)
-            } else {
-                showToast(getString(R.string.empty_image))
             }
         }
     }

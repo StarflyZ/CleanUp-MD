@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.capstone.cleanup.data.di.Injection.provideRepository
 import com.capstone.cleanup.data.repository.MainRepository
 import com.capstone.cleanup.ui.article.ArticleViewModel
+import com.capstone.cleanup.ui.detail.DetailViewModel
 import com.capstone.cleanup.ui.login.LoginViewModel
 import com.capstone.cleanup.ui.main.MainViewModel
+import com.capstone.cleanup.ui.post.PostViewModel
 import com.capstone.cleanup.ui.profile.ProfileViewModel
 import com.capstone.cleanup.ui.register.RegisterViewModel
+import com.capstone.cleanup.ui.report.ReportViewModel
 
 class ViewModelFactory(
     private val repository: MainRepository
@@ -33,8 +36,20 @@ class ViewModelFactory(
                 ArticleViewModel(repository) as T
             }
 
+            modelClass.isAssignableFrom(ReportViewModel::class.java) -> {
+                ReportViewModel(repository) as T
+            }
+
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(PostViewModel::class.java) -> {
+                PostViewModel(repository) as T
+            }
+
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(repository) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

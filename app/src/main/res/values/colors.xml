@@ -143,5 +143,6 @@
 
     <color name="black">#000000</color>
     <color name="blue_link">#0000EE</color>
+    <color name="message_blue">#039BE5</color>
     <color name="transparent">#00ffffff</color>
 </resources>
