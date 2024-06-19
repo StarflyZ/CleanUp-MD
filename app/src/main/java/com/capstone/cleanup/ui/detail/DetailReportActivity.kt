@@ -16,6 +16,7 @@ import com.capstone.cleanup.data.Message
 import com.capstone.cleanup.databinding.ActivityDetailReportBinding
 import com.capstone.cleanup.ui.ViewModelFactory
 import com.capstone.cleanup.ui.adpter.MessageAdapter
+import com.capstone.cleanup.utils.showToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -39,6 +40,8 @@ class DetailReportActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        ID = intent.getStringExtra(EXTRA_ID)
 
         lifecycleScope.launch { detailViewModel.initData() }
 
@@ -75,6 +78,8 @@ class DetailReportActivity : AppCompatActivity() {
 
                 detailViewModel.sendComment(message)
                 edMessage.setText("")
+                showToast(this@DetailReportActivity, "Message send")
+                commentAdapter?.startListening()
             }
         }
 
@@ -114,5 +119,9 @@ class DetailReportActivity : AppCompatActivity() {
         const val EXTRA_TIME_STAMP = "extra timeStamp for report"
         const val EXTRA_TITLE = "extra title for report"
         const val EXTRA_LOC = "extra location for report"
+
+        const val EXTRA_ID = "extra id for report"
+
+        var ID: String? = null
     }
 }

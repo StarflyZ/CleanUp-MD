@@ -68,8 +68,7 @@
     <string name="tflitevision_is_not_initialized_yet">fLiteVision is not initialized yet</string>
     <string name="image_classifier_failed">Image classifier failed to initialize. See error logs for details</string>
     <string name="result_empty">Image classifier have no result</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_post_classification">Classification AI</string>
     <string name="classify_desc">Put your image here and our AI will classify it\'s type</string>
     <string name="nav_classification">Classify</string>
@@ -80,5 +79,18 @@
     <string name="report_time">%s, %s</string>
     <string name="report_comment">Comment</string>
     <string name="ed_comment_hint">Type a comment ...</string>
+
+    <string name="manage_organic_waste">Managing Organic Waste\n
+1. Waste Segregation: Separate organic waste from inorganic waste.\n
+2. Composting: Turn organic waste into compost to use as fertilizer.\n
+3. Liquid Fertilizer: Ferment vegetable and fruit scraps to make liquid fertilizer.\n
+4. Biogas: Use organic waste to produce biogas for energy.\n</string>
+    
+    <string name="manage_inorganic_waste">Managing Inorganic Waste\n
+1. Waste Segregation: Separate inorganic waste by type (plastic, paper, glass, metal).\n
+2. Recycling: Send recyclable inorganic waste to recycling centers.\n
+3. Reducing Usage: Reduce the use of single-use items and choose reusable products.\n
+4. Creative Reuse: Repurpose inorganic waste for crafts or creative projects.\n
+5. Safe Disposal: Dispose of non-recyclable inorganic waste properly.</string>
 
 </resources>

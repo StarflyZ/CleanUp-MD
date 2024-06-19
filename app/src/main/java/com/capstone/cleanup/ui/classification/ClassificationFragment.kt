@@ -153,6 +153,7 @@ class ClassificationFragment : Fragment() {
         val intent = Intent(requireActivity(), ClassificationResultActivity::class.java)
         intent.putExtra(EXTRA_RESULT, displayResult)
         intent.putExtra(EXTRA_IMAGE, currentImageUri)
+        intent.putExtra(EXTRA_RESULT_VALUE, resultValue)
         startActivity(intent)
     }
 
@@ -176,7 +177,7 @@ class ClassificationFragment : Fragment() {
                                     it[0].categories.sortedByDescending { it?.score }
                                 displayResult = sortedCategories[0].let {
                                     resultValue = when (it.label) {
-                                        "U" -> "Unorganic "
+                                        "U" -> "Inorganic "
                                         "O" -> "Organic "
                                         else -> "Other type"
                                     }
@@ -210,5 +211,6 @@ class ClassificationFragment : Fragment() {
 
         const val EXTRA_IMAGE = "image for classification result"
         const val EXTRA_RESULT = "result for ml"
+        const val EXTRA_RESULT_VALUE = "result value for ml"
     }
 }

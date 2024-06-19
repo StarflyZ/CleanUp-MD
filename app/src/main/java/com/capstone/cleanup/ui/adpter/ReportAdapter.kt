@@ -53,7 +53,6 @@ class ReportAdapter(
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: Reports) {
-            dataId = item.id
             with(binding) {
                 tvItemTitle.text = item.title
                 tvItemName.text = item.reporter
@@ -74,6 +73,7 @@ class ReportAdapter(
                     intent.putExtra(DetailReportActivity.EXTRA_DESC, item.description)
                     intent.putExtra(DetailReportActivity.EXTRA_IMG, item.imgUrl)
                     intent.putExtra(DetailReportActivity.EXTRA_LOC, item.location)
+                    intent.putExtra(DetailReportActivity.EXTRA_ID, item.id)
                     if (item.timeStamp != null) {
                         intent.putExtra(
                             DetailReportActivity.EXTRA_TIME_STAMP,
@@ -106,9 +106,5 @@ class ReportAdapter(
                     old.description == new.description
         }
 
-    }
-
-    companion object {
-        var dataId: String? = null
     }
 }

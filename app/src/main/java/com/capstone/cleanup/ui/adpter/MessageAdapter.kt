@@ -38,6 +38,7 @@ class MessageAdapter(
                 tvMessenger.text = item.name
                 Glide.with(itemView.context)
                     .load(item.photoUrl)
+                    .placeholder(R.drawable.baseline_account_circle_24)
                     .circleCrop()
                     .into(ivMessenger)
                 if (item.timeStamp != null) {

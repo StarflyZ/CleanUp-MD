@@ -32,11 +32,12 @@ class DetailViewModel(repository: MainRepository) : ViewModel() {
         if (c == 1) return
         viewModelScope.launch(Dispatchers.IO) {
             reportRef.get().addOnSuccessListener {
-                it.documents.forEach { doc ->
-                    if (doc.id == ReportAdapter.dataId) {
+                val documents = it.documents
+                for (doc in documents) {
+                    if (doc.id == DetailReportActivity.ID) {
                         _messageRef.value = reportRef.document(doc.id).collection(COMMENT_CHILD)
                         jobDone.value = true
-                    }
+                    } else continue
                 }
             }
             c += 1
