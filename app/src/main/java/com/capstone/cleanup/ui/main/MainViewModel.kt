@@ -3,21 +3,27 @@ package com.capstone.cleanup.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.capstone.cleanup.data.Articles
+import androidx.lifecycle.viewModelScope
 import com.capstone.cleanup.data.Reports
 import com.capstone.cleanup.data.repository.MainRepository
-import com.capstone.cleanup.ui.adpter.ArticleAdapter
 import com.capstone.cleanup.ui.adpter.ReportAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.launch
 
-class MainViewModel(repository: MainRepository) : ViewModel() {
-    private val articlesRef = repository.articlesRef
-    private val articleOption = FirestoreRecyclerOptions.Builder<Articles>()
-        .setQuery(articlesRef, Articles::class.java)
-        .build()
+class MainViewModel(private val repository: MainRepository) : ViewModel() {
+    val articles = repository.articles
 
-    val articleAdapter = ArticleAdapter(articleOption)
+    fun getArticles() {
+        _isLoading.value = true
+        try {
+            viewModelScope.launch {
+                repository.getArticles()
+            }
+        } finally {
+            _isLoading.value = false
+        }
+    }
 
     val currentUser = repository.currentUser
 
@@ -30,14 +36,4 @@ class MainViewModel(repository: MainRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
-    init {
-        startLoading()
-    }
-
-    private fun startLoading() {
-        articlesRef.addSnapshotListener { value, _ ->
-            _isLoading.value = value?.metadata?.hasPendingWrites() == true
-        }
-    }
 }

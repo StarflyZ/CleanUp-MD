@@ -25,7 +25,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import org.tensorflow.lite.task.vision.classifier.Classifications
+import org.tensorflow.lite.task.gms.vision.classifier.Classifications
 import java.text.NumberFormat
 
 class ClassificationFragment : Fragment() {

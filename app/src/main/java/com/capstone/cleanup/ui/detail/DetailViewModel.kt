@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.capstone.cleanup.data.Message
 import com.capstone.cleanup.data.repository.MainRepository
 import com.capstone.cleanup.ui.adpter.MessageAdapter
-import com.capstone.cleanup.ui.adpter.ReportAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import kotlinx.coroutines.Dispatchers

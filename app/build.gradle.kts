@@ -17,6 +17,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "baseUrl", "\"https://firebase-backend-adiq6xy5wa-et.a.run.app/\"")
     }
 
     buildTypes {
@@ -67,6 +69,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
     // Firebase Authentication
     implementation(libs.firebase.auth)
 
@@ -85,8 +92,8 @@ dependencies {
     implementation(libs.tensorflow.lite.metadata)
     implementation(libs.tensorflow.lite.gpu)
 
-    implementation(libs.tensorflow.lite.task.vision)
+    //implementation(libs.tensorflow.lite.task.vision)
     // Use this for TFLite Vision task using play service
-    //implementation(libs.tensorflow.lite.task.vision.play.services)
-    //implementation(libs.play.services.tflite.gpu)
+    implementation(libs.tensorflow.lite.task.vision.play.services)
+    implementation(libs.play.services.tflite.gpu)
 }

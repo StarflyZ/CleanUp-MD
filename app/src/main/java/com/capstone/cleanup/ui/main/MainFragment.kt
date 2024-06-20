@@ -1,6 +1,7 @@
 package com.capstone.cleanup.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,10 @@ class MainFragment : Fragment() {
         ViewModelFactory.getInstance(requireActivity())
     }
 
-    private lateinit var articleAdapter: ArticleAdapter
     private lateinit var reportAdapter: ReportAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        articleAdapter = mainViewModel.articleAdapter
         reportAdapter = mainViewModel.reportAdapter
     }
 
@@ -41,18 +40,30 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val articleAdapter = ArticleAdapter()
+        val layoutManager0 = LinearLayoutManager(requireActivity())
+        layoutManager0.orientation = RecyclerView.HORIZONTAL
+        binding?.rvArticle?.layoutManager = layoutManager0
+        binding?.rvArticle?.adapter = articleAdapter
+
+        mainViewModel.getArticles()
+
+        mainViewModel.articles.observe(requireActivity()) {
+            if (it != null) {
+                articleAdapter.submitList(it)
+                Log.d(TAG, "Article not null")
+            }
+        }
+
         mainViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
 
-        val layoutManager0 = LinearLayoutManager(requireActivity())
+
         val layoutManager1 = LinearLayoutManager(requireActivity())
-        layoutManager0.orientation = RecyclerView.HORIZONTAL
         layoutManager1.orientation = RecyclerView.HORIZONTAL
-        binding?.rvArticle?.layoutManager = layoutManager0
         binding?.rvReport?.layoutManager = layoutManager1
 
-        binding?.rvArticle?.adapter = articleAdapter
         binding?.rvReport?.adapter = reportAdapter
     }
 
@@ -63,13 +74,15 @@ class MainFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        articleAdapter.startListening()
         reportAdapter.startListening()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        articleAdapter.stopListening()
         reportAdapter.stopListening()
+    }
+
+    companion object {
+        private val TAG = MainFragment::class.java.simpleName
     }
 }

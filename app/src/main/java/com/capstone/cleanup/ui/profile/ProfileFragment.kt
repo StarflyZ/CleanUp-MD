@@ -71,12 +71,16 @@ class ProfileFragment : Fragment() {
         }
 
 
-        Log.d("ProfilePicChecker", profileViewModel.profilePic.toString())
+        if (BuildConfig.DEBUG) Log.d("$TAG-ProfilePicChecker", profileViewModel.profilePic.toString())
         binding?.apply {
             tvUsername.text = profileViewModel.username
 
             ivProfilePic.setOnClickListener {
                 launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+
+            btnAbout.setOnClickListener {
+                startActivity(Intent(requireContext(), AboutActivity::class.java))
             }
 
             btnLogout.setOnClickListener {
@@ -120,5 +124,9 @@ class ProfileFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        private val TAG = ProfileFragment::class.java.simpleName
     }
 }

@@ -4,52 +4,33 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.capstone.cleanup.data.Articles
-import com.capstone.cleanup.R
+import com.capstone.cleanup.data.response.ArticleItem
 import com.capstone.cleanup.databinding.ItemArticleBinding
 import com.capstone.cleanup.ui.detail.DetailArticleActivity
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class ArticleAdapter(
-    option: FirestoreRecyclerOptions<Articles>
-) : FirestoreRecyclerAdapter<Articles, ArticleAdapter.ArticleViewHolder>(option) {
-    private val currentData = ArrayList<Articles>()
-
+class ArticleAdapter :
+    ListAdapter<ArticleItem, ArticleAdapter.ArticleViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ArticleAdapter.ArticleViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_article, parent, false)
-        val binding = ItemArticleBinding.bind(view)
+        val binding = ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ArticleViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: ArticleAdapter.ArticleViewHolder,
-        position: Int,
-        model: Articles
-    ) {
-        holder.bind(model)
-    }
-
-    override fun onDataChanged() {
-        super.onDataChanged()
-        val oldItem = currentData
-        val newItem = snapshots
-        val diffCallback = DiffCallback(oldItem, newItem)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        currentData.clear()
-        currentData.addAll(snapshots)
-        diffResult.dispatchUpdatesTo(this)
+    override fun onBindViewHolder(holder: ArticleAdapter.ArticleViewHolder, position: Int) {
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
     inner class ArticleViewHolder(private val binding: ItemArticleBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Articles) {
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ArticleItem) {
             with(binding) {
                 tvItemTitle.text = item.title
                 tvItemSource.text = item.source
@@ -69,23 +50,15 @@ class ArticleAdapter(
         }
     }
 
-    inner class DiffCallback(
-        private val oldItem: List<Articles>,
-        private val newItem: List<Articles>
-    ) : DiffUtil.Callback() {
-        override fun getOldListSize(): Int = oldItem.size
+    companion object {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ArticleItem>() {
+            override fun areItemsTheSame(oldItem: ArticleItem, newItem: ArticleItem): Boolean {
+                return oldItem == newItem
+            }
 
-        override fun getNewListSize(): Int = newItem.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldItem[oldItemPosition].title == newItem[newItemPosition].title
+            override fun areContentsTheSame(oldItem: ArticleItem, newItem: ArticleItem): Boolean {
+                return oldItem.id == newItem.id
+            }
         }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val old = oldItem[oldItemPosition]
-            val new = newItem[newItemPosition]
-            return old.title == new.title && old.content == new.content
-        }
-
     }
 }

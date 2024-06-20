@@ -4,8 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat.getString
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
@@ -15,6 +13,9 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.capstone.cleanup.R
+import com.capstone.cleanup.data.response.ArticleItem
+import com.capstone.cleanup.data.retrofit.ApiService
+import com.firebase.ui.firestore.BuildConfig
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -27,20 +28,18 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.options
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.storage
-import java.net.URL
+import retrofit2.HttpException
 
 class MainRepository private constructor(
-    private val context: Context
+    private val context: Context,
+    private val apiService: ApiService
 ){
     private val auth: FirebaseAuth = Firebase.auth
     val currentUser = auth.currentUser
 
     private val fireStore: FirebaseFirestore = Firebase.firestore
-    val articlesRef = fireStore.collection(ARTICLE_CHILD).orderBy("id")
     val reportRef = fireStore.collection(REPORT_CHILD)
 
     val storage: FirebaseStorage = Firebase.storage
@@ -53,6 +52,9 @@ class MainRepository private constructor(
 
     private val _liveProfilePic = MutableLiveData<Uri>()
     val liveProfilePic: LiveData<Uri> get() = _liveProfilePic
+
+    private val _articles = MutableLiveData<List<ArticleItem>>()
+    val articles: LiveData<List<ArticleItem>> get() = _articles
 
     private val _errMsg = MutableLiveData<String>()
     val errMsg: LiveData<String> get() = _errMsg
@@ -196,7 +198,7 @@ class MainRepository private constructor(
         uploadTask.addOnSuccessListener {
             if (it.task.isSuccessful) {
                 val resultURL = userDataRef.downloadUrl
-                Log.d(TAG, "Link Before Update: ${currentUser?.photoUrl}")
+                if (BuildConfig.DEBUG) Log.d(TAG, "Link Before Update: ${currentUser?.photoUrl}")
 
                 resultURL.addOnSuccessListener { uri ->
                     val setProfilePic = UserProfileChangeRequest.Builder()
@@ -206,11 +208,11 @@ class MainRepository private constructor(
                         if (task.isSuccessful) {
                             Log.d(TAG, "Profile update Success")
                             auth.updateCurrentUser(currentUser)
-                            Log.d(TAG, "Link After Update: ${currentUser.photoUrl}")
+                            if (BuildConfig.DEBUG) Log.d(TAG, "Link After Update: ${currentUser.photoUrl}")
                             currentUser.reload()
                             _liveProfilePic.value = currentUser.photoUrl
                             Log.d(TAG, "Profile reloaded")
-                            Log.d(TAG, "Link After Reload: ${currentUser.photoUrl}")
+                            if (BuildConfig.DEBUG) Log.d(TAG, "Link After Reload: ${currentUser.photoUrl}")
                         }
                     }
                     _isUploading.value = false
@@ -222,15 +224,27 @@ class MainRepository private constructor(
         }
     }
 
+    suspend fun getArticles(){
+        try {
+            val response = apiService.getArticles()
+            val responseData = response.article
+
+            if (BuildConfig.DEBUG) Log.d(TAG, responseData.toString())
+            _articles.value = responseData
+        } catch (e: HttpException) {
+            _errMsg.value = e.message
+        }
+    }
+
     companion object {
         private val TAG = MainRepository::class.java.simpleName
 
-        private const val ARTICLE_CHILD = "article"
         private const val REPORT_CHILD = "report"
         private const val USER_DATA_CHILD = "user_data"
 
         fun getInstance(
-            context: Context
-        ) = MainRepository(context)
+            context: Context,
+            apiService: ApiService
+        ) = MainRepository(context, apiService)
     }
 }
